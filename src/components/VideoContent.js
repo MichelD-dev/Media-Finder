@@ -1,25 +1,26 @@
+import { Container, Grid } from 'semantic-ui-react'
 import VideoDetail from './VideoDetail'
 import VideoList from './VideoList'
 import { withFetch } from './withFetch'
 
-const VideoContent = ({category, data, onVideoSelect}) => {
-    if (category !== 'videos') return null
+const VideoContent = ({ category, data, onVideoSelect }) => {
+  if (category !== 'videos') return null
   return (
-    <div className='ui container'>
-      <div className='ui grid'>
-        <div className='ui row'>
-          <div className='eleven wide column'>
-        {  data.selectedVideo && <VideoDetail video={data.selectedVideo} />}
-          </div>
-          <div className='five wide column'>
+    <Container>
+      <Grid>
+        <Grid.Row>
+          <Grid.Column width={11}>
+            {data.selectedVideo && <VideoDetail video={data.selectedVideo} />}
+          </Grid.Column>
+          <Grid.Column>
             <VideoList
               onVideoSelect={onVideoSelect}
               videos={(data.selectedVideo, data.videos)}
             />
-          </div>
-        </div>
-      </div>
-    </div>
+          </Grid.Column>
+        </Grid.Row>
+      </Grid>
+    </Container>
   )
 }
 
