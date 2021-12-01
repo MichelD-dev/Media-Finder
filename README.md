@@ -1,4 +1,4 @@
-Module de recherche photo/vidéo, basé sur les Apis Youtube et Unsplash, avec axios en HOC et périmêtres d'erreur.
+Module de recherche photo/vidéo, basé sur les Apis Youtube et Unsplash, avec axios en HOC + périmètre d'erreurs.
 
 Site mis en ligne sur Github Pages
 
