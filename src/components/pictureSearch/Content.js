@@ -1,5 +1,5 @@
 import ImageCard from './ImageCard'
-import { withFetch } from './withFetch'
+import { withFetch } from '../../HOC/withFetch'
 import './Content.css'
 
 const Content = ({ category, data }) => {

@@ -1,8 +1,8 @@
 import axios from 'axios'
 
 export default axios.create({
-  baseURL: 'https://api.unsplash.com/search/photos?per_page=20/',
+  baseURL: 'https://api.unplash.com/search/photos?per_page=20/',
   headers: {
-    Authorization: 'Client-ID 0mlGfJe2iOXQowJaZLw_WV4bGqLIh9EKMcCDCc7CyAI',
+    Authorization: process.env.REACT_APP_API_AUTH,
   },
 })

@@ -1,10 +1,10 @@
-import SearchBar from './components/SearchBar'
+import SearchBar from './components/SearchBar/SearchBar'
 import { Container } from 'semantic-ui-react'
-import FetchedContent from './components/Content'
+import FetchedContent from './components/pictureSearch/Content'
 import { useState } from 'react'
 import { ErrorBoundary } from 'react-error-boundary'
-import FetchedVideoContent from './components/VideoContent'
-import ErrorDisplay from './components/ErrorDisplay.js'
+import FetchedVideoContent from './components/videoSearch/VideoContent'
+import ErrorDisplay from './components/errorDisplay/ErrorDisplay.js'
 
 function App() {
   const [searchTerm, setSearchTerm] = useState('')
@@ -17,8 +17,8 @@ function App() {
 
   return (
     <Container style={{ marginTop: '1rem' }}>
+      <SearchBar onSubmit={onSubmit}></SearchBar>
       <ErrorBoundary key={category} FallbackComponent={ErrorDisplay}>
-        <SearchBar onSubmit={onSubmit}></SearchBar>
         {category === 'images' && (
           <FetchedContent searchTerm={searchTerm} category={category} />
         )}

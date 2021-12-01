@@ -1,3 +1,4 @@
+import { Image } from 'semantic-ui-react'
 import './VideoItem.css'
 
 const VideoItem = ({ video, onVideoSelect }) => {
@@ -7,14 +8,12 @@ const VideoItem = ({ video, onVideoSelect }) => {
       onClick={() => onVideoSelect(video)}
       className='video-item item'
     >
-      <img
+      <Image
         src={video.snippet.thumbnails.medium.url}
         alt={video.snippet.title}
-        className='ui image'
       />
       <div className='content'>
         <div className='header'>{video.snippet.title}</div>
-        {/* <div className='description'>{video.snippet.description}</div> */}
       </div>
     </div>
   )

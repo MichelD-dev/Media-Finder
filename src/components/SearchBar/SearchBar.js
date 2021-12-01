@@ -3,7 +3,6 @@ import { Button, Form, Input, Label, Segment } from 'semantic-ui-react'
 
 const SearchBar = ({ onSubmit }) => {
   const [search, setSearch] = useState('')
-  const [error, setError] = useState('')
   const [inputError, setInputError] = useState('')
   const searchRef = useRef()
 
@@ -18,7 +17,7 @@ const SearchBar = ({ onSubmit }) => {
     setInputError('')
     onSubmit(search, category)
   }
-  if (error) throw error
+
   return (
     <Segment>
       <Form>
