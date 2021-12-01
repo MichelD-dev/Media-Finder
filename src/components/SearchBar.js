@@ -3,21 +3,27 @@ import { Button, Form, Input, Segment } from 'semantic-ui-react'
 
 const SearchBar = ({ onSubmit }) => {
   const [search, setSearch] = useState('')
+  const [error, setError] = useState('')
   const searchRef = useRef()
 
   useEffect(() => searchRef.current.focus(), [])
 
   const handleSubmit = (e, category) => {
     e.preventDefault()
+    if (!search) {
+      searchRef.current.focus() //FIXME
+      setError('Veuillez remplir le champ de recherche')
+    }
     onSubmit(search, category)
   }
+  if (error) throw error
 
   return (
     <Segment>
       <Form>
         <Form.Field>
           <label>
-            Search terms:
+            Votre recherche:
             <Input
               ref={searchRef}
               value={search}
@@ -27,11 +33,15 @@ const SearchBar = ({ onSubmit }) => {
         </Form.Field>
         <Form.Field>
           <Button.Group>
-            <Button type='button' onClick={e => handleSubmit(e, 'images')}>
+            <Button type='submit' onClick={e => handleSubmit(e, 'images')}>
               Images
             </Button>
-            <Button.Or text='' />
-            <Button type='button' onClick={''} positive>
+            <Button.Or text='ou' />
+            <Button
+              type='submit'
+              onClick={e => handleSubmit(e, 'videos')}
+              positive
+            >
               Vidéos
             </Button>
           </Button.Group>
