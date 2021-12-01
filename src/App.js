@@ -3,6 +3,7 @@ import { Container } from 'semantic-ui-react'
 import FetchedContent from './components/Content'
 import { useState } from 'react'
 import { ErrorBoundary } from 'react-error-boundary'
+import FetchedVideoContent from './components/VideoContent'
 
 function App() {
   const [searchTerm, setSearchTerm] = useState('')
@@ -13,13 +14,14 @@ function App() {
     setCategory(category)
   }
 
-  const ErrorDisplay = error => <p>{error}</p>
+  const ErrorDisplay = ({error}) => <p style={{color: 'red'}}>{error}</p>//FIXME
 
   return (
     <Container style={{ marginTop: '1rem' }}>
-      <SearchBar onSubmit={onSubmit} />
       <ErrorBoundary FallbackComponent={ErrorDisplay}>
-        <FetchedContent searchTerm={searchTerm} category={category} />
+        <SearchBar onSubmit={onSubmit} />
+        {/* <FetchedContent searchTerm={searchTerm} category={category} /> */}
+        <FetchedVideoContent searchTerm={searchTerm} category={category} />
       </ErrorBoundary>
     </Container>
   )
