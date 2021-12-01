@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Dimmer, Loader } from 'semantic-ui-react'
 import unsplash from '../API/unsplash'
 import youtube from '../API/youtube'
@@ -11,12 +11,14 @@ export const withFetch = WrappedComponent => props => {
     selectedVideo: null,
     videos: [],
   })
+  const isMountedVal = useRef(1)
 
   let category = ''
   if (props.category === 'images') category = unsplash
   if (props.category === 'videos') category = youtube
 
   useEffect(() => {
+    isMountedVal.current = 1
     const fetchRequest = async () => {
       if (!props.searchTerm) return
       try {
@@ -50,6 +52,7 @@ export const withFetch = WrappedComponent => props => {
     }
 
     fetchRequest()
+    return () => (isMountedVal.current = 0)
   }, [category, props.searchTerm])
 
   const onVideoSelect = video => {
