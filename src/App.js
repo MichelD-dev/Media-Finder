@@ -6,18 +6,20 @@ import { ErrorBoundary } from 'react-error-boundary'
 
 function App() {
   const [searchTerm, setSearchTerm] = useState('')
+  const [category, setCategory] = useState('')
 
-  const onSubmit = term => {
+  const onSubmit = (term, category) => {
     setSearchTerm(term)
+    setCategory(category)
   }
 
-const ErrorDisplay = error => <p>{error}</p>
+  const ErrorDisplay = error => <p>{error}</p>
 
   return (
     <Container style={{ marginTop: '1rem' }}>
       <SearchBar onSubmit={onSubmit} />
       <ErrorBoundary FallbackComponent={ErrorDisplay}>
-      <FetchedContent searchTerm={searchTerm} />
+        <FetchedContent searchTerm={searchTerm} category={category} />
       </ErrorBoundary>
     </Container>
   )
