@@ -2,7 +2,8 @@ import VideoDetail from './VideoDetail'
 import VideoList from './VideoList'
 import { withFetch } from './withFetch'
 
-const VideoContent = ({data, onVideoSelect}) => {
+const VideoContent = ({category, data, onVideoSelect}) => {
+    if (category !== 'videos') return null
   return (
     <div className='ui container'>
       <div className='ui grid'>

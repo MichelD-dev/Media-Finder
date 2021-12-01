@@ -10,43 +10,39 @@ export const withFetch = WrappedComponent => props => {
     videos: [],
   })
 
-  const category =
-    (props.category === 'images' && unsplash) ||
-    (props.category === 'videos' && youtube)
+  let category = ''
+  if (props.category === 'images') category = unsplash
+  if (props.category === 'videos') category = youtube
 
   useEffect(() => {
     const fetchRequest = async () => {
       if (!props.searchTerm) return
       try {
-        const response = await category.get('', {
-          // params: { query: props.searchTerm },
-          params: {
-            q: props.searchTerm,
-          },
-        })
+        const response = await category.get(
+          '',
+          category === youtube
+            ? {
+                params: {
+                  q: props.searchTerm,
+                },
+              }
+            : {
+                params: { query: props.searchTerm },
+              }
+        )
         if (response.status !== 200)
-          setError('Fetch request error.' + response.status)
-        setVideoData({
-          videos: response.data.items,
-          selectedVideo: response.data.items[0],
-        })
+          setError('Votre requête a rencontré un problème.')
+        category === youtube
+          ? setVideoData({
+              videos: response.data.items,
+              selectedVideo: response.data.items[0],
+            })
+          : setData(response.data.results)
       } catch (err) {
-        setError(err.response.data.error)
-        console.log(err.response.data.error)
+        setError('La connexion avec le serveur n\'a pu être établie.')
       }
-      // try {
-      //   const response = await category.get('', {
-      //     params: { query: props.searchTerm },
-      //   })
-      //   if (response.status !== 200)
-      //     setError('Fetch request error.' + response.status)
-      //   setData(response.data.results)
-      // } catch (err) {
-      //   setError(err.response.data.error)
-      //   console.log(err.response.data.error)
-      // }
     }
-    // fetchRequest()
+
     fetchRequest()
   }, [category, props.searchTerm])
 
@@ -56,6 +52,12 @@ export const withFetch = WrappedComponent => props => {
 
   if (error) throw error
 
-  // return <WrappedComponent {...props} data={data} />
-  return <WrappedComponent {...props} onVideoSelect={onVideoSelect} data={videoData} />
+  return (
+    <WrappedComponent
+      {...props}
+      category={props.category}
+      onVideoSelect={onVideoSelect}
+      data={props.category === 'videos' ? videoData : data}
+    />
+  )
 }

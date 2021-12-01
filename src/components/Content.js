@@ -2,7 +2,8 @@ import ImageCard from './ImageCard'
 import { withFetch } from './withFetch'
 import './Content.css'
 
-const Content = ({ data }) => {
+const Content = ({ category, data }) => {
+  if (category !== 'images') return null
   const ImgList = data.map(image => {
     return <ImageCard key={image.id} image={image} />
   })

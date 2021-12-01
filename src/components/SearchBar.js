@@ -17,7 +17,7 @@ const SearchBar = ({ onSubmit }) => {
     onSubmit(search, category)
   }
   if (error) throw error
-
+  //FIXME réagit au Enter après 1ere recherche
   return (
     <Segment>
       <Form>
@@ -33,12 +33,12 @@ const SearchBar = ({ onSubmit }) => {
         </Form.Field>
         <Form.Field>
           <Button.Group>
-            <Button type='submit' onClick={e => handleSubmit(e, 'images')}>
+            <Button type='button' onClick={e => handleSubmit(e, 'images')}>
               Images
             </Button>
             <Button.Or text='ou' />
             <Button
-              type='submit'
+              type='button'
               onClick={e => handleSubmit(e, 'videos')}
               positive
             >

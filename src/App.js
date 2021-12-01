@@ -14,14 +14,19 @@ function App() {
     setCategory(category)
   }
 
-  const ErrorDisplay = ({error}) => <p style={{color: 'red'}}>{error}</p>//FIXME
+  const ErrorDisplay = ({ error }) => <p style={{ color: 'red' }}>{error}</p> //FIXME
 
   return (
     <Container style={{ marginTop: '1rem' }}>
       <ErrorBoundary FallbackComponent={ErrorDisplay}>
         <SearchBar onSubmit={onSubmit} />
-        {/* <FetchedContent searchTerm={searchTerm} category={category} /> */}
-        <FetchedVideoContent searchTerm={searchTerm} category={category} />
+        {category === 'images' && (
+          <FetchedContent searchTerm={searchTerm} category={category} />
+        )}
+
+        {category === 'videos' && (
+          <FetchedVideoContent searchTerm={searchTerm} category={category} />
+        )}
       </ErrorBoundary>
     </Container>
   )
