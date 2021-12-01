@@ -4,6 +4,7 @@ import FetchedContent from './components/Content'
 import { useState } from 'react'
 import { ErrorBoundary } from 'react-error-boundary'
 import FetchedVideoContent from './components/VideoContent'
+import ErrorDisplay from './components/ErrorDisplay.js'
 
 function App() {
   const [searchTerm, setSearchTerm] = useState('')
@@ -14,12 +15,10 @@ function App() {
     setCategory(category)
   }
 
-  const ErrorDisplay = ({ error }) => <p style={{ color: 'red' }}>{error}</p> //FIXME
-
   return (
     <Container style={{ marginTop: '1rem' }}>
-      <ErrorBoundary FallbackComponent={ErrorDisplay}>
-        <SearchBar onSubmit={onSubmit} />
+      <ErrorBoundary key={category} FallbackComponent={ErrorDisplay}>
+        <SearchBar onSubmit={onSubmit}></SearchBar>
         {category === 'images' && (
           <FetchedContent searchTerm={searchTerm} category={category} />
         )}

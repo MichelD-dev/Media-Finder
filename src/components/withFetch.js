@@ -1,10 +1,12 @@
 import { useEffect, useState } from 'react'
+import { Dimmer, Loader } from 'semantic-ui-react'
 import unsplash from '../API/unsplash'
 import youtube from '../API/youtube'
 
 export const withFetch = WrappedComponent => props => {
   const [error, setError] = useState(null)
   const [data, setData] = useState([])
+  const [isLoading, setIsLoading] = useState(false)
   const [videoData, setVideoData] = useState({
     selectedVideo: null,
     videos: [],
@@ -30,16 +32,20 @@ export const withFetch = WrappedComponent => props => {
                 params: { query: props.searchTerm },
               }
         )
-        if (response.status !== 200)
+        if (response.status !== 200) {
           setError('Votre requête a rencontré un problème.')
+        }
+        setIsLoading(true)
         category === youtube
           ? setVideoData({
               videos: response.data.items,
               selectedVideo: response.data.items[0],
             })
           : setData(response.data.results)
+
+        setIsLoading(false)
       } catch (err) {
-        setError('La connexion avec le serveur n\'a pu être établie.')
+        setError("La connexion avec le serveur n'a pu être établie.")
       }
     }
 
@@ -52,7 +58,13 @@ export const withFetch = WrappedComponent => props => {
 
   if (error) throw error
 
-  return (
+  return isLoading ? (
+    <Dimmer active>
+      <Loader inverted size='big' style={{ opacity: '.8' }}>
+        Veuillez patienter...
+      </Loader>
+    </Dimmer>
+  ) : (
     <WrappedComponent
       {...props}
       category={props.category}

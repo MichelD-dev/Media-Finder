@@ -1,23 +1,24 @@
 import { useEffect, useRef, useState } from 'react'
-import { Button, Form, Input, Segment } from 'semantic-ui-react'
+import { Button, Form, Input, Label, Segment } from 'semantic-ui-react'
 
 const SearchBar = ({ onSubmit }) => {
   const [search, setSearch] = useState('')
   const [error, setError] = useState('')
+  const [inputError, setInputError] = useState('')
   const searchRef = useRef()
 
   useEffect(() => searchRef.current.focus(), [])
 
   const handleSubmit = (e, category) => {
     e.preventDefault()
-    if (!search) {
-      searchRef.current.focus() //FIXME
-      setError('Veuillez remplir le champ de recherche')
+    if (search === '') {
+      searchRef.current.focus()
+      return setInputError('Veuillez remplir le champ de recherche')
     }
+    setInputError('')
     onSubmit(search, category)
   }
   if (error) throw error
-  //FIXME réagit au Enter après 1ere recherche
   return (
     <Segment>
       <Form>
@@ -27,8 +28,16 @@ const SearchBar = ({ onSubmit }) => {
             <Input
               ref={searchRef}
               value={search}
-              onChange={e => setSearch(e.target.value)}
+              onChange={e => {
+                setInputError('')
+                setSearch(e.target.value)
+              }}
             />
+            {inputError && (
+              <Label pointing prompt size='large'>
+                {inputError}
+              </Label>
+            )}
           </label>
         </Form.Field>
         <Form.Field>
