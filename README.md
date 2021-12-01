@@ -1,8 +1,8 @@
 Module de recherche photo/vidéo, basé sur les Apis Youtube et Unsplash, avec axios en HOC + périmètre d'erreurs.
 
-Site mis en ligne sur Github Pages
+Site mis en ligne sur Netlify
 
-https://micheld-dev.github.io/Media-Finder/
+https://gifted-hypatia-019f83.netlify.app
 
 
 # Getting Started with Create React App
