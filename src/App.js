@@ -15,10 +15,21 @@ function App() {
     setCategory(category)
   }
 
+  const reset = () => {
+    setSearchTerm()
+    setCategory()
+  }
+
+  const test = Math.random()
   return (
     <Container style={{ marginTop: '1rem' }}>
       <SearchBar onSubmit={onSubmit}></SearchBar>
-      <ErrorBoundary key={category} FallbackComponent={ErrorDisplay}>
+      <ErrorBoundary
+        key={`category_${test}`}
+        FallbackComponent={ErrorDisplay}
+        onReset={reset}
+        resetKeys={[searchTerm]}
+      >
         {category === 'images' && (
           <FetchedContent searchTerm={searchTerm} category={category} />
         )}
