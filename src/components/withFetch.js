@@ -4,12 +4,15 @@ import unsplash from '../API/unsplash'
 export const withFetch = WrappedComponent => props => {
   const [error, setError] = useState(null)
   const [data, setData] = useState([])
+  const category =
+    (props.category === 'images' && unsplash) ||
+    (props.category === 'videos' && '')
 
   useEffect(() => {
     const fetchRequest = async () => {
       if (!props.searchTerm) return
       try {
-        const response = await unsplash.get('/search/photos?per_page=20', {
+        const response = await category.get('', {
           params: { query: props.searchTerm },
         })
         if (response.status !== 200)
@@ -21,7 +24,7 @@ export const withFetch = WrappedComponent => props => {
       }
     }
     fetchRequest()
-  }, [props.searchTerm])
+  }, [category, props.searchTerm])
 
   if (error) throw error
 
