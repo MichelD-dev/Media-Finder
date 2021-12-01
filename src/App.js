@@ -22,7 +22,7 @@ function App() {
 
   const test = Math.random()
   return (
-    <Container style={{ marginTop: '1rem' }}>
+    <Container style={{ paddingTop: '1rem' }}>
       <SearchBar onSubmit={onSubmit}></SearchBar>
       <ErrorBoundary
         key={`category_${test}`}
