@@ -5,6 +5,7 @@ import { useState } from 'react'
 import { ErrorBoundary } from 'react-error-boundary'
 import FetchedVideoContent from './components/videoSearch/VideoContent'
 import ErrorDisplay from './components/errorDisplay/ErrorDisplay.js'
+import { v4 as uuidv4 } from 'uuid';
 
 function App() {
   const [searchTerm, setSearchTerm] = useState('')
@@ -20,12 +21,11 @@ function App() {
     setCategory()
   }
 
-  const test = Math.random()
   return (
     <Container style={{ paddingTop: '1rem' }}>
       <SearchBar onSubmit={onSubmit}></SearchBar>
       <ErrorBoundary
-        key={`category_${test}`}
+        key={uuidv4()}
         FallbackComponent={ErrorDisplay}
         onReset={reset}
         resetKeys={[searchTerm]}

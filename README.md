@@ -2,7 +2,7 @@ Module de recherche photo/vidéo, basé sur les Apis Youtube et Unsplash, avec a
 
 Site mis en ligne sur Netlify
 
-https://gifted-hypatia-019f83.netlify.app
+https://media-finder.netlify.app/
 
 
 # Getting Started with Create React App
