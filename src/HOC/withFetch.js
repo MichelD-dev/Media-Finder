@@ -23,7 +23,7 @@ export const withFetch = WrappedComponent => props => {
       if (!props.searchTerm) return
       try {
         const response = await category.get(
-          '',
+          'search/photos',
           category === youtube
             ? {
                 params: {
