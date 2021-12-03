@@ -1,16 +1,29 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useReducer, useRef, useState } from 'react'
 import { Dimmer, Loader, Segment } from 'semantic-ui-react'
 import unsplash from '../API/unsplash'
 import youtube from '../API/youtube'
 
-export const withFetch = WrappedComponent => props => {
-  const [error, setError] = useState(null)
-  const [data, setData] = useState([])
-  const [isLoading, setIsLoading] = useState(false)
-  const [videoData, setVideoData] = useState({
+const initialState = {
+  error: null,
+  data: [],
+  isLoading: false,
+  videoData: {
     selectedVideo: null,
     videos: [],
-  })
+  },
+}
+
+const reducer = (state, action) => ({ ...state, ...action })
+
+export const withFetch = WrappedComponent => props => {
+  const [state, dispatch] = useReducer(reducer, initialState)
+  // const [error, setError] = useState(null)
+  // const [data, setData] = useState([])
+  // const [isLoading, setIsLoading] = useState(false)
+  // const [videoData, setVideoData] = useState({
+  //   selectedVideo: null,
+  //   videos: [],
+  // })
   const isMountedVal = useRef(1)
 
   let category = ''
@@ -19,7 +32,7 @@ export const withFetch = WrappedComponent => props => {
 
   useEffect(() => {
     isMountedVal.current = 1
-    setIsLoading(true)
+    dispatch({ isLoading: true })
     const fetchRequest = async () => {
       if (!props.searchTerm) return
       try {
@@ -37,22 +50,26 @@ export const withFetch = WrappedComponent => props => {
         )
         if (response.status !== 200) {
           isMountedVal.current &&
-            setError('Votre requête a rencontré un problème.')
+            dispatch({ error: 'Votre requête a rencontré un problème.' })
         }
         if (isMountedVal.current) {
           category === youtube
             ? isMountedVal.current &&
-              setVideoData({
-                videos: response.data.items,
-                selectedVideo: response.data.items[0],
+              dispatch({
+                videoData: {
+                  videos: response.data.items,
+                  selectedVideo: response.data.items[0],
+                },
               })
-            : isMountedVal.current && setData(response.data.results)
+            : isMountedVal.current && dispatch({ data: response.data.results })
 
-          setIsLoading(false)
+          dispatch({ isLoading: false })
         }
       } catch (err) {
         isMountedVal.current &&
-          setError("La connexion avec le serveur n'a pu être établie.")
+          dispatch({
+            error: "La connexion avec le serveur n'a pu être établie.",
+          })
       }
     }
 
@@ -61,12 +78,12 @@ export const withFetch = WrappedComponent => props => {
   }, [category, props.searchTerm])
 
   const onVideoSelect = video => {
-    setVideoData({ selectedVideo: video })
+    dispatch({ videoData: { ...state.videoData, selectedVideo: video } })
   }
 
-  if (error) throw error
+  if (state.error) throw state.error
 
-  return isLoading ? (
+  return state.isLoading ? (
     <Dimmer as={Segment} active inverted>
       <Loader size='big' style={{ opacity: '.8' }}>
         Veuillez patienter...
@@ -77,7 +94,7 @@ export const withFetch = WrappedComponent => props => {
       {...props}
       category={props.category}
       onVideoSelect={onVideoSelect}
-      data={props.category === 'videos' ? videoData : data}
+      data={props.category === 'videos' ? state.videoData : state.data}
     />
   )
 }
