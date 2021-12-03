@@ -1,9 +1,10 @@
-import { useRef, useState, useEffect } from 'react'
+import { useRef, useEffect, useReducer } from 'react'
 import { Button, Form, Input, Message, Segment } from 'semantic-ui-react'
 
+const reducer = (state, action) => ({ ...state, ...action })
+
 const SearchBar = ({ onSubmit }) => {
-  const [search, setSearch] = useState('')
-  const [inputError, setInputError] = useState('')
+  const [state, dispatch] = useReducer(reducer, { search: '', inputError: '' })
   const searchRef = useRef()
 
   useEffect(() => {
@@ -12,12 +13,12 @@ const SearchBar = ({ onSubmit }) => {
 
   const handleSubmit = (e, category) => {
     e.preventDefault()
-    if (search === '') {
+    if (state.search === '') {
       searchRef.current.focus()
-      return setInputError('Veuillez remplir le champ de recherche')
+      return dispatch({ inputError: 'Veuillez remplir le champ de recherche' })
     }
-    setInputError('')
-    onSubmit(search, category)
+    dispatch({ inputError: '' })
+    onSubmit(state.search, category)
   }
 
   return (
@@ -28,13 +29,13 @@ const SearchBar = ({ onSubmit }) => {
             Votre recherche:
             <Input
               ref={searchRef}
-              value={search}
+              value={state.search}
               onChange={e => {
-                setSearch(e.target.value)
-                setInputError('')
+                dispatch({ search: e.target.value })
+                dispatch({ inputError: '' })
               }}
             />
-            {inputError && (
+            {state.inputError && (
               <Message
                 error
                 content='Veuillez remplir le champ de recherche.'

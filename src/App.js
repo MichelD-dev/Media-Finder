@@ -1,26 +1,28 @@
 import SearchBar from './Components/SearchBar/SearchBar'
 import { Container } from 'semantic-ui-react'
 import FetchedContent from './Components/PictureSearch/Content'
-import { useState } from 'react'
+import { useReducer } from 'react'
 import { ErrorBoundary } from 'react-error-boundary'
 import FetchedVideoContent from './Components/VideoSearch/VideoContent'
 import ErrorDisplay from './Components/ErrorDisplay/ErrorDisplay.js'
 import { v4 as uuidv4 } from 'uuid'
 
+const reducer = (state, action) => ({ ...state, ...action })
+
 function App() {
-  const [searchTerm, setSearchTerm] = useState('')
-  const [category, setCategory] = useState('')
+  const [state, dispatch] = useReducer(reducer, {
+    searchTerm: '',
+    category: '',
+  })
 
   const onSubmit = (term, category) => {
-    setSearchTerm(term)
-    setCategory(category)
+    dispatch({ searchTerm: term, category })
   }
 
   const reset = () => {
-    setSearchTerm()
-    setCategory()
+    dispatch({ searchTerm: '', category: '' })
   }
- 
+
   return (
     <Container style={{ paddingTop: '1rem' }}>
       <SearchBar onSubmit={onSubmit}></SearchBar>
@@ -28,14 +30,20 @@ function App() {
         key={uuidv4()}
         FallbackComponent={ErrorDisplay}
         onReset={reset}
-        resetKeys={[searchTerm]}
+        resetKeys={[state.searchTerm]}
       >
-        {category === 'images' && (
-          <FetchedContent searchTerm={searchTerm} category={category} />
+        {state.category === 'images' && (
+          <FetchedContent
+            searchTerm={state.searchTerm}
+            category={state.category}
+          />
         )}
 
-        {category === 'videos' && (
-          <FetchedVideoContent searchTerm={searchTerm} category={category} />
+        {state.category === 'videos' && (
+          <FetchedVideoContent
+            searchTerm={state.searchTerm}
+            category={state.category}
+          />
         )}
       </ErrorBoundary>
     </Container>

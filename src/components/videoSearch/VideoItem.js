@@ -1,4 +1,4 @@
-import { Image, Segment } from 'semantic-ui-react'
+import { Image } from 'semantic-ui-react'
 import './VideoItem.css'
 
 const VideoItem = ({ video, onVideoSelect }) => {
