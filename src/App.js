@@ -1,11 +1,11 @@
-import SearchBar from './components/SearchBar/SearchBar'
+import SearchBar from './Components/SearchBar/SearchBar'
 import { Container } from 'semantic-ui-react'
-import FetchedContent from './components/pictureSearch/Content'
+import FetchedContent from './Components/PictureSearch/Content'
 import { useState } from 'react'
 import { ErrorBoundary } from 'react-error-boundary'
-import FetchedVideoContent from './components/videoSearch/VideoContent'
-import ErrorDisplay from './components/errorDisplay/ErrorDisplay.js'
-import { v4 as uuidv4 } from 'uuid';
+import FetchedVideoContent from './Components/VideoSearch/VideoContent'
+import ErrorDisplay from './Components/ErrorDisplay/ErrorDisplay.js'
+import { v4 as uuidv4 } from 'uuid'
 
 function App() {
   const [searchTerm, setSearchTerm] = useState('')
@@ -20,7 +20,7 @@ function App() {
     setSearchTerm()
     setCategory()
   }
-
+ 
   return (
     <Container style={{ paddingTop: '1rem' }}>
       <SearchBar onSubmit={onSubmit}></SearchBar>

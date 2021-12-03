@@ -6,7 +6,7 @@ import { withFetch } from '../../HOC/withFetch'
 const VideoContent = ({ category, data, onVideoSelect }) => {
   if (category !== 'videos') return null
   return (
-    <Container>
+    <Container >
       <Grid>
         <Grid.Row>
           <Grid.Column width={11}>

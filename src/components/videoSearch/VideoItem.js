@@ -1,4 +1,4 @@
-import { Image } from 'semantic-ui-react'
+import { Image, Segment } from 'semantic-ui-react'
 import './VideoItem.css'
 
 const VideoItem = ({ video, onVideoSelect }) => {
@@ -13,7 +13,7 @@ const VideoItem = ({ video, onVideoSelect }) => {
         alt={video.snippet.title}
       />
       <div className='content'>
-        <div className='header'>{video.snippet.title}</div>
+        <div className='header'>{video.snippet.title.slice(0, 30)}</div>
       </div>
     </div>
   )

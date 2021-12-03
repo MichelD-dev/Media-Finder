@@ -1,12 +1,14 @@
-import { useEffect, useRef, useState } from 'react'
-import { Button, Form, Input, Label, Segment } from 'semantic-ui-react'
+import { useRef, useState, useEffect } from 'react'
+import { Button, Form, Input, Message, Segment } from 'semantic-ui-react'
 
 const SearchBar = ({ onSubmit }) => {
   const [search, setSearch] = useState('')
   const [inputError, setInputError] = useState('')
   const searchRef = useRef()
 
-  useEffect(() => searchRef.current.focus(), [])
+  useEffect(() => {
+    searchRef.current.focus()
+  }, [])
 
   const handleSubmit = (e, category) => {
     e.preventDefault()
@@ -20,7 +22,7 @@ const SearchBar = ({ onSubmit }) => {
 
   return (
     <Segment>
-      <Form>
+      <Form error>
         <Form.Field>
           <label>
             Votre recherche:
@@ -28,20 +30,21 @@ const SearchBar = ({ onSubmit }) => {
               ref={searchRef}
               value={search}
               onChange={e => {
-                setInputError('')
                 setSearch(e.target.value)
+                setInputError('')
               }}
             />
             {inputError && (
-              <Label pointing prompt size='large'>
-                {inputError}
-              </Label>
+              <Message
+                error
+                content='Veuillez remplir le champ de recherche.'
+              />
             )}
           </label>
         </Form.Field>
         <Form.Field>
           <Button.Group>
-            <Button type='button' onClick={e => handleSubmit(e, 'images')}>
+            <Button type='submit' onClick={e => handleSubmit(e, 'images')}>
               Images
             </Button>
             <Button.Or text='ou' />

@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { Dimmer, Loader } from 'semantic-ui-react'
+import { Dimmer, Loader, Segment } from 'semantic-ui-react'
 import unsplash from '../API/unsplash'
 import youtube from '../API/youtube'
 
@@ -19,6 +19,7 @@ export const withFetch = WrappedComponent => props => {
 
   useEffect(() => {
     isMountedVal.current = 1
+    setIsLoading(true)
     const fetchRequest = async () => {
       if (!props.searchTerm) return
       try {
@@ -35,19 +36,23 @@ export const withFetch = WrappedComponent => props => {
               }
         )
         if (response.status !== 200) {
-          setError('Votre requête a rencontré un problème.')
+          isMountedVal.current &&
+            setError('Votre requête a rencontré un problème.')
         }
-        setIsLoading(true)
-        category === youtube
-          ? setVideoData({
-              videos: response.data.items,
-              selectedVideo: response.data.items[0],
-            })
-          : setData(response.data.results)
+        if (isMountedVal.current) {
+          category === youtube
+            ? isMountedVal.current &&
+              setVideoData({
+                videos: response.data.items,
+                selectedVideo: response.data.items[0],
+              })
+            : isMountedVal.current && setData(response.data.results)
 
-        setIsLoading(false)
+          setIsLoading(false)
+        }
       } catch (err) {
-        setError("La connexion avec le serveur n'a pu être établie.")
+        isMountedVal.current &&
+          setError("La connexion avec le serveur n'a pu être établie.")
       }
     }
 
@@ -62,8 +67,8 @@ export const withFetch = WrappedComponent => props => {
   if (error) throw error
 
   return isLoading ? (
-    <Dimmer active>
-      <Loader inverted size='big' style={{ opacity: '.8' }}>
+    <Dimmer as={Segment} active inverted>
+      <Loader size='big' style={{ opacity: '.8' }}>
         Veuillez patienter...
       </Loader>
     </Dimmer>
