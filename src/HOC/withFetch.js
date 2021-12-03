@@ -1,7 +1,7 @@
 import { useEffect, useReducer, useRef } from 'react'
 import { Dimmer, Loader, Segment } from 'semantic-ui-react'
-import unsplash from '../API/unsplash'
-import youtube from '../API/youtube'
+import unsplash from 'API/unsplash'
+import youtube from 'API/youtube'
 
 const initialState = {
   error: null,

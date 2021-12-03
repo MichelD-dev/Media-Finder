@@ -1,5 +1,5 @@
 import ImageCard from './ImageCard'
-import { withFetch } from '../../HOC/withFetch'
+import { withFetch } from 'HOC/withFetch'
 import './Content.css'
 import { Dimmer, Segment } from 'semantic-ui-react'
 import { useReducer } from 'react'

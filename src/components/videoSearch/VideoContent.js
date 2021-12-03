@@ -1,7 +1,7 @@
 import { Container, Grid } from 'semantic-ui-react'
 import VideoDetail from './VideoDetail'
 import VideoList from './VideoList'
-import { withFetch } from '../../HOC/withFetch'
+import { withFetch } from 'HOC/withFetch'
 
 const VideoContent = ({ category, data, onVideoSelect }) => {
   if (category !== 'videos') return null
