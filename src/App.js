@@ -3,9 +3,9 @@ import { Container } from 'semantic-ui-react'
 import FetchedContent from 'Components/PictureSearch/Content'
 import { useReducer } from 'react'
 import { ErrorBoundary } from 'react-error-boundary'
-import FetchedVideoContent from 'Components/VideoSearch/VideoContent'
 import ErrorDisplay from 'Components/ErrorDisplay/ErrorDisplay.js'
 import { v4 as uuidv4 } from 'uuid'
+import VideoContent from 'Components/VideoSearch/VideoContent'
 
 const reducer = (state, action) => ({ ...state, ...action })
 
@@ -40,7 +40,7 @@ function App() {
         )}
 
         {state.category === 'videos' && (
-          <FetchedVideoContent
+          <VideoContent
             searchTerm={state.searchTerm}
             category={state.category}
           />

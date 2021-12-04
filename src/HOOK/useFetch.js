@@ -1,5 +1,4 @@
 import { useEffect, useReducer, useRef } from 'react'
-import { Dimmer, Loader, Segment } from 'semantic-ui-react'
 import unsplash from 'API/unsplash'
 import youtube from 'API/youtube'
 
@@ -15,7 +14,7 @@ const initialState = {
 
 const reducer = (state, action) => ({ ...state, ...action })
 
-export const withFetch = WrappedComponent => props => {
+const useFetch = props => {
   const [state, dispatch] = useReducer(reducer, initialState)
   const isMountedVal = useRef(1)
 
@@ -76,18 +75,7 @@ export const withFetch = WrappedComponent => props => {
 
   if (state.error) throw state.error
 
-  return state.isLoading ? (
-    <Dimmer as={Segment} active inverted>
-      <Loader size='big' style={{ opacity: '.8' }}>
-        Veuillez patienter...
-      </Loader>
-    </Dimmer>
-  ) : (
-    <WrappedComponent
-      {...props}
-      category={props.category}
-      onVideoSelect={onVideoSelect}
-      data={props.category === 'videos' ? state.videoData : state.data}
-    />
-  )
+  return { ...state, onVideoSelect }
 }
+
+export default useFetch

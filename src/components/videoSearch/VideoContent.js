@@ -1,21 +1,25 @@
+import useFetch from 'HOOK/useFetch'
 import { Container, Grid } from 'semantic-ui-react'
 import VideoDetail from './VideoDetail'
 import VideoList from './VideoList'
-import { withFetch } from 'HOC/withFetch'
 
-const VideoContent = ({ category, data, onVideoSelect }) => {
+const VideoContent = ({ searchTerm, category }) => {
+  const { videoData, onVideoSelect } = useFetch({ searchTerm, category })
+
   if (category !== 'videos') return null
   return (
-    <Container >
+    <Container>
       <Grid>
         <Grid.Row>
           <Grid.Column width={11}>
-            {data.selectedVideo && <VideoDetail video={data.selectedVideo} />}
+            {videoData.selectedVideo && (
+              <VideoDetail video={videoData.selectedVideo} />
+            )}
           </Grid.Column>
           <Grid.Column>
             <VideoList
               onVideoSelect={onVideoSelect}
-              videos={(data.selectedVideo, data.videos)}
+              videos={(videoData.selectedVideo, videoData.videos)}
             />
           </Grid.Column>
         </Grid.Row>
@@ -24,6 +28,4 @@ const VideoContent = ({ category, data, onVideoSelect }) => {
   )
 }
 
-const FetchedVideoContent = withFetch(VideoContent)
-
-export default FetchedVideoContent
+export default VideoContent
