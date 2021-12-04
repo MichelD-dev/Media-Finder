@@ -1,10 +1,11 @@
 import ImageCard from './ImageCard'
-import { withFetch } from 'HOC/withFetch'
+import useFetch from 'HOOK/useFetch'
 import './Content.css'
 import { Dimmer, Segment } from 'semantic-ui-react'
 import { useReducer } from 'react'
 
-const Content = ({ category, data }) => {
+const Content = ({ category, searchTerm }) => {
+  const { data } = useFetch({ searchTerm, category })
   const [active, toggleActive] = useReducer(val => !val, true)
 
   const reset = () => {
@@ -17,7 +18,7 @@ const Content = ({ category, data }) => {
     return <ImageCard key={image.id} image={image} />
   })
 
-  if (data.length === 0)
+  if (!searchTerm)
     return (
       <Dimmer.Dimmable blurring dimmed={active}>
         <Dimmer
@@ -37,6 +38,4 @@ const Content = ({ category, data }) => {
   return <div className='image-list'>{ImgList}</div>
 }
 
-const FetchedContent = withFetch(Content)
-
-export default FetchedContent
+export default Content
