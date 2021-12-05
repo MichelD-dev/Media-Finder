@@ -1,10 +1,10 @@
 import ImageCard from './ImageCard'
 import useFetch from 'HOOK/useFetch'
-import './Content.css'
+import './ImageContent.css'
 import { Dimmer, Segment } from 'semantic-ui-react'
 import { useReducer } from 'react'
 
-const Content = ({ category, searchTerm }) => {
+const ImageContent = ({ category, searchTerm }) => {
   const { data } = useFetch({ searchTerm, category })
   const [active, toggleActive] = useReducer(val => !val, true)
 
@@ -38,4 +38,4 @@ const Content = ({ category, searchTerm }) => {
   return <div className='image-list'>{ImgList}</div>
 }
 
-export default Content
+export default ImageContent

@@ -1,11 +1,11 @@
-import { useEffect, useRef, useState } from 'react'
+import { useLayoutEffect, useRef, useState } from 'react'
 import { Image } from 'semantic-ui-react'
 
 const ImageCard = ({ image }) => {
-  const [state, setState] = useState({ spans: 0 })
+  const [{ spans }, setState] = useState({ spans: 0 })
   const imageRef = useRef()
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     imageRef.current.addEventListener('load', setSpans)
   }, [])
 
@@ -16,7 +16,7 @@ const ImageCard = ({ image }) => {
   }
 
   return (
-    <Image style={{ gridRowEnd: `span ${state.spans}` }}>
+    <Image style={{ gridRowEnd: `span ${spans}` }}>
       <img ref={imageRef} alt={image.description} src={image.urls.regular} />
     </Image>
   )
