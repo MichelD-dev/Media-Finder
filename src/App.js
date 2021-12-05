@@ -36,8 +36,16 @@ function App() {
           <FetchedContent searchTerm={searchTerm} category={category} />
         )}
 
+<<<<<<< HEAD
         {category === 'videos' && (
           <VideoContent searchTerm={searchTerm} category={category} />
+=======
+        {state.category === 'videos' && (
+          <VideoContent
+            searchTerm={state.searchTerm}
+            category={state.category}
+          />
+>>>>>>> 89c14afe1e62338bf143e072a2dfa4b6efe8a25d
         )}
       </ErrorBoundary>
     </Container>
