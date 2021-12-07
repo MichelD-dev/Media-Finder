@@ -2,7 +2,7 @@ import { Segment } from 'semantic-ui-react'
 
 const VideoDetail = ({ video }) => {
   if (!video) {
-    return <div>Loading...</div>
+    return <div>Loading...</div>//FIXME sert à quoi?
   }
   const videoSrc = `https://www.youtube.com/embed/${video.id.videoId}`
 

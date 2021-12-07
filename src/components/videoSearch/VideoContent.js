@@ -1,12 +1,13 @@
-import useFetch from 'HOOK/useFetch'
+import useFetchVideos from 'HOOK/useFetchVideos'
 import { Container, Grid } from 'semantic-ui-react'
 import VideoDetail from './VideoDetail'
 import VideoList from './VideoList'
 
-const VideoContent = ({ searchTerm, category }) => {
-  const { videoData, onVideoSelect } = useFetch({ searchTerm, category })
+const VideoContent = ({ searchTerm }) => {
+  const { videoData, onVideoSelect } = useFetchVideos(searchTerm)
 
-  if (category !== 'videos') return null
+  if (!videoData) return null
+if (videoData)
   return (
     <Container>
       <Grid>

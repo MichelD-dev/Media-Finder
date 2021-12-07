@@ -4,7 +4,6 @@ import ImageContent from 'Components/PictureSearch/ImageContent'
 import { useReducer } from 'react'
 import { ErrorBoundary } from 'react-error-boundary'
 import ErrorDisplay from 'Components/ErrorDisplay/ErrorDisplay.js'
-import { v4 as uuidv4 } from 'uuid'
 import VideoContent from 'Components/VideoSearch/VideoContent'
 
 const reducer = (state, action) => ({ ...state, ...action })
@@ -27,7 +26,7 @@ function App() {
     <Container style={{ paddingTop: '1rem' }}>
       <SearchBar onSubmit={onSubmit}></SearchBar>
       <ErrorBoundary
-        key={uuidv4()}
+        key={searchTerm}
         FallbackComponent={ErrorDisplay}
         onReset={reset}
         resetKeys={[searchTerm]}
