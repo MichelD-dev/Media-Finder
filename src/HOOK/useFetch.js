@@ -1,81 +1,61 @@
-import { useEffect, useReducer, useRef } from 'react'
-import unsplash from 'API/unsplash'
-import youtube from 'API/youtube'
+import { useCallback, useEffect, useReducer } from 'react'
 
 const initialState = {
   error: null,
   data: [],
-  isLoading: false,
+  status: 'idle',
   videoData: {
     selectedVideo: null,
     videos: [],
   },
 }
 
-const reducer = (state, action) => ({ ...state, ...action })
+const reducer = (state, action) => {
+  switch (action.type) {
+    case 'fetching':
+      return { status: 'fetching', data: null, error: null }
+    case 'done':
+      return { ...state, status: 'done', data: action.payload }
+    case 'fail':
+      return { ...state, status: 'fail', error: action.error }
+    default:
+      return state
+  }
+}
 
-const useFetch = props => {
+const useFetch = () => {
   const [state, dispatch] = useReducer(reducer, initialState)
-  const isMountedVal = useRef(1)
 
-  let category = ''
-  if (props.category === 'images') category = unsplash
-  if (props.category === 'videos') category = youtube
+  const execute = useCallback(async fetchService => {
+    if (!fetchService) return
+    dispatch({ type: 'fetching' })
+    try {
+      const response = await fetchService
 
-  useEffect(() => {
-    isMountedVal.current = 1
-    dispatch({ isLoading: true })
-    const fetchRequest = async () => {
-      if (!props.searchTerm) return
-      try {
-        const response = await category.get(
-          '',
-          category === youtube
-            ? {
-                params: {
-                  q: props.searchTerm,
-                },
-              }
-            : {
-                params: { query: props.searchTerm },
-              }
-        )
-        if (response.status !== 200) {
-          isMountedVal.current &&
-            dispatch({ error: 'Votre requête a rencontré un problème.' })
-        }
-        if (isMountedVal.current) {
-          category === youtube
-            ? isMountedVal.current &&
-              dispatch({
-                videoData: {
-                  videos: response.data.items,
-                  selectedVideo: response.data.items[0],
-                },
-              })
-            : isMountedVal.current && dispatch({ data: response.data.results })
-
-          dispatch({ isLoading: false })
-        }
-      } catch (err) {
-        isMountedVal.current &&
-          dispatch({
-            error: "La connexion avec le serveur n'a pu être établie.",
-          })
+      if (response.status !== 200) {
+        dispatch({
+          type: 'fail',
+          error: 'Votre requête a rencontré un problème.',
+        })
       }
+
+      dispatch({ type: 'done', payload: response.data.results })
+
+    } catch (err) {
+      dispatch({
+        type: 'fail',
+        error: "La connexion avec le serveur n'a pu être établie.",
+      })
     }
-
-    fetchRequest()
-    return () => (isMountedVal.current = 0)
-  }, [category, props.searchTerm])
-
+  }, [])
+useEffect(() => console.log(state.data), [state])
   const onVideoSelect = video => {
-    dispatch({ videoData: { ...state.videoData, selectedVideo: video } })
+    dispatch({ data: { ...state.data, selectedVideo: video } }) //TODO à traiter
   }
 
   if (state.error) throw state.error
 
-  return { ...state, onVideoSelect }
+  return { ...state, onVideoSelect, execute }
 }
 
 export default useFetch
