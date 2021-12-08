@@ -1,32 +1,41 @@
-import useFetchVideos from 'HOOK/useFetchVideos'
-import { Container, Grid } from 'semantic-ui-react'
-import VideoDetail from './VideoDetail'
-import VideoList from './VideoList'
+import ErrorDisplay from 'Components/Displays/ErrorDisplay'
+import useFetchVideos from 'Hooks/useFetchVideos'
+import { Loader } from 'semantic-ui-react'
+import VideoGrid from './VideoGrid'
+
+const styles = {
+  dimmer: {
+    marginTop: '150px',
+    height: '75%',
+  },
+  h3: { color: '#999' },
+  loader: { marginTop: '30%' },
+}
 
 const VideoContent = ({ searchTerm }) => {
-  const { videoData, onVideoSelect } = useFetchVideos(searchTerm)
+  const { data, selectedVideo, onVideoSelect, status } =
+    useFetchVideos(searchTerm)
 
-  if (!videoData) return null
-if (videoData)
-  return (
-    <Container>
-      <Grid>
-        <Grid.Row>
-          <Grid.Column width={11}>
-            {videoData.selectedVideo && (
-              <VideoDetail video={videoData.selectedVideo} />
-            )}
-          </Grid.Column>
-          <Grid.Column>
-            <VideoList
-              onVideoSelect={onVideoSelect}
-              videos={(videoData.selectedVideo, videoData.videos)}
-            />
-          </Grid.Column>
-        </Grid.Row>
-      </Grid>
-    </Container>
-  )
+  if (status === 'fetching') {
+    return (
+      <Loader active inline='centered' size='large' style={styles.loader}>
+        Chargement...
+      </Loader>
+    )
+  }
+
+  if (status === 'fail') {
+    return <ErrorDisplay />
+  }
+
+  if (data)
+    return (
+      <VideoGrid
+        selectedVideo={selectedVideo}
+        onVideoSelect={onVideoSelect}
+        data={data}
+      />
+    )
 }
 
 export default VideoContent

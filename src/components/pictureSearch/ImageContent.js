@@ -1,39 +1,48 @@
-import ImageCard from './ImageCard'
 import './ImageContent.css'
-import { Dimmer, Segment } from 'semantic-ui-react'
+import { Loader } from 'semantic-ui-react'
 import { useReducer } from 'react'
-import useFetchImages from 'HOOK/useFetchImages'
+import useFetchImages from 'Hooks/useFetchImages'
+import ErrorDisplay from 'Components/Displays/ErrorDisplay'
+import NoDatasDisplay from 'Components/Displays/NoDatasDisplay'
+import ImagesList from './ImagesList'
+
+const styles = {
+  dimmer: {
+    marginTop: '150px',
+    height: '75%',
+  },
+  h3: { color: '#999' },
+  loader: { marginTop: '30%' },
+}
 
 const ImageContent = ({ searchTerm }) => {
-  const { data } = useFetchImages(searchTerm)
-  const [active, toggleActive] = useReducer(val => !val, true)
+  const { data, status } = useFetchImages(searchTerm)
+  const [active, toggleShowedWarning] = useReducer(val => !val, true)
 
   const reset = () => {
-    toggleActive()
+    toggleShowedWarning()
   }
 
-  const ImgList = data && data.map(image => {
-    return <ImageCard key={image.id} image={image} />
-  })
-
-  if (!data)
+  if (status === 'fetching') {
     return (
-      <Dimmer.Dimmable blurring dimmed={active}>
-        <Dimmer
-          inverted
-          page
-          active={active}
-          onClickOutside={reset}
-          style={{ marginTop: '150px', height: '75%' }}
-        >
-          <Segment basic>
-            <h3 style={{ color: '#999' }}>Pas d'images</h3>
-          </Segment>
-        </Dimmer>
-      </Dimmer.Dimmable>
+      <Loader
+        active
+        inline='centered'
+        size='large'
+        content='Chargement...'
+        style={styles.loader}
+      />
     )
+  }
 
-  return <div className='image-list'>{ImgList}</div>
+  if (status === 'fail') {
+    return <ErrorDisplay />
+  }
+
+  if (data.length === 0)
+    return <NoDatasDisplay active={active} reset={reset} styles={styles} />
+
+  return <ImagesList data={data} />
 }
 
 export default ImageContent

@@ -1,10 +1,13 @@
-import SearchBar from 'Components/SearchBar/SearchBar'
-import { Container } from 'semantic-ui-react'
-import ImageContent from 'Components/PictureSearch/ImageContent'
 import { useReducer } from 'react'
+import { Container } from 'semantic-ui-react'
 import { ErrorBoundary } from 'react-error-boundary'
-import ErrorDisplay from 'Components/ErrorDisplay/ErrorDisplay.js'
+import SearchBar from 'Components/SearchBar/SearchBar'
+import ImageContent from 'Components/PictureSearch/ImageContent'
+import ErrorDisplay from 'Components/Displays/ErrorDisplay'
 import VideoContent from 'Components/VideoSearch/VideoContent'
+import CacheProvider from 'Context/CacheProvider'
+
+const styles = { container: { paddingTop: '1rem' } }
 
 const reducer = (state, action) => ({ ...state, ...action })
 
@@ -14,8 +17,8 @@ function App() {
     category: '',
   })
 
-  const onSubmit = (term, category) => {
-    dispatch({ searchTerm: term, category })
+  const onSubmit = (searchTerm, category) => {
+    dispatch({ searchTerm, category })
   }
 
   const reset = () => {
@@ -23,22 +26,19 @@ function App() {
   }
 
   return (
-    <Container style={{ paddingTop: '1rem' }}>
+    <Container style={styles.container}>
       <SearchBar onSubmit={onSubmit}></SearchBar>
-      <ErrorBoundary
-        key={searchTerm}
-        FallbackComponent={ErrorDisplay}
-        onReset={reset}
-        resetKeys={[searchTerm]}
-      >
-        {category === 'images' && (
-          <ImageContent searchTerm={searchTerm} category={category} />
-        )}
-
-        {category === 'videos' && (
-          <VideoContent searchTerm={searchTerm} category={category} />
-        )}
-      </ErrorBoundary>
+      <CacheProvider>
+        <ErrorBoundary
+          key={searchTerm}
+          FallbackComponent={ErrorDisplay}
+          onReset={reset}
+          resetKeys={[searchTerm]}
+        >
+          {category === 'images' && <ImageContent searchTerm={searchTerm} />}
+          {category === 'videos' && <VideoContent searchTerm={searchTerm} />}
+        </ErrorBoundary>
+      </CacheProvider>
     </Container>
   )
 }
