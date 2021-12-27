@@ -41,7 +41,7 @@ const SearchBar = ({ onSubmit }) => {
             {inputError && (
               <Message
                 error
-                content='Veuillez remplir le champ de recherche.'
+                content={inputError}
               />
             )}
           </label>

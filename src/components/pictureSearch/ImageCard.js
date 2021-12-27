@@ -6,14 +6,14 @@ const ImageCard = ({ image }) => {
   const imageRef = useRef()
 
   useLayoutEffect(() => {
+    const setSpans = () => {
+      const height = imageRef.current.clientHeight
+      const spans = Math.ceil(height / 10)
+      setState({ spans })
+    }
     imageRef.current.addEventListener('load', setSpans)
+    return () => window.addEventListener('load', setSpans)
   }, [])
-
-  const setSpans = () => {
-    const height = imageRef.current.clientHeight
-    const spans = Math.ceil(height / 10)
-    setState({ spans })
-  }
 
   return (
     <Image style={{ gridRowEnd: `span ${spans}` }}>

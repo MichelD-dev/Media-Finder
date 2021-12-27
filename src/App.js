@@ -30,7 +30,7 @@ function App() {
       <SearchBar onSubmit={onSubmit}></SearchBar>
       <CacheProvider>
         <ErrorBoundary
-          key={searchTerm}
+          // key={searchTerm} //FIXME Pas nécessaire
           FallbackComponent={ErrorDisplay}
           onReset={reset}
           resetKeys={[searchTerm]}
